@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import twitterLogo from './assets/twitter-logo.svg';
 import './App.css';
 
@@ -7,7 +7,8 @@ const TWITTER_LINK = `https://twitter.com/${TWITTER_HANDLE}`;
 
 const App = () => {
 // this function holds the logic for deciding if a phantom wallet is connnected or not
-
+  //state
+  const [walletAddress, setWalletAddress] = useState(null);
   const checkIfWalletIsConnected = async () => {
   // We're using optional chaining (question mark) to check if the object is null
     if (window?.solana?.isPhantom) {
@@ -23,6 +24,18 @@ const App = () => {
     }
   };
 
+  
+  const connectWallet = async () => {};
+
+  const renderNotConnectedContainer = () => (
+    <button
+      className = "cta-button connect-wallet-button"
+      onClick ={connectWallet}
+    >
+     Connect to Wallet
+    </button>
+  );
+
   /*
    * When our component first mounts, let's check to see if we have a connected
    * Phantom Wallet
@@ -33,16 +46,20 @@ const App = () => {
     };
     window.addEventListener('load', onLoad);
     return () => window.removeEventListener('load', onLoad);
+  
   }, []);
   
   return (
     <div className="App">
       <div className="container">
+        <div className={walletAddress ? 'authed-container' :  'container'}>
         <div className="header-container">
           <p className="header">🖼 GIF Portal</p>
           <p className="sub-text">
             View your GIF collection in the metaverse ✨
           </p>
+          {/* {renderNotConnectedContainer()} */}
+          {!walletAddress && renderNotConnectedContainer()}
         </div>
         <div className="footer-container">
           <img alt="Twitter Logo" className="twitter-logo" src={twitterLogo} />
@@ -52,6 +69,7 @@ const App = () => {
             target="_blank"
             rel="noreferrer"
           >{`built on @${TWITTER_HANDLE}`}</a>
+        </div>
         </div>
       </div>
     </div>
