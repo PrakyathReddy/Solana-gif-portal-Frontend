@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import twitterLogo from './assets/twitter-logo.svg';
 import './App.css';
 
-// Constants
 const TWITTER_HANDLE = '0xBlockSmith';
 const TWITTER_LINK = `https://twitter.com/${TWITTER_HANDLE}`;
 
@@ -13,6 +12,12 @@ const App = () => {
   // We're using optional chaining (question mark) to check if the object is null
     if (window?.solana?.isPhantom) {
       console.log('Phantom wallet found!');
+      /*
+      * The solana object gives us a function that will alllow 
+      * us to connect directly to the user's wallet.
+      */
+      const response = await window.solana.connect({onlyIfTrusted: true});
+      console.log("connected with public key", response.publicKey.toString());
     } else {
       alert('Solana wallet not found! Get a Phantom Wallet 👻');
     }
